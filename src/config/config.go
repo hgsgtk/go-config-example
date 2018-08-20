@@ -1,11 +1,14 @@
 package config
 
-import "github.com/BurntSushi/toml"
+import (
+	"github.com/BurntSushi/toml"
+	"os"
+)
 
 // DBConfig represents database connection configuration information.
 type DBConfig struct {
 	User     string `toml:"user"`
-	Password string `toml:"password"`
+	Password string
 	Host     string `toml:"host"`
 	Port     int    `toml:"port"`
 	Name     string `toml:"name"`
@@ -24,6 +27,8 @@ func NewConfig(path string, appMode string) (Config, error) {
 	if _, err := toml.DecodeFile(confPath, &conf); err != nil {
 		return conf, err
 	}
+
+	conf.DB.Password = os.Getenv("DB_PASSWORD")
 
 	return conf, nil
 }
