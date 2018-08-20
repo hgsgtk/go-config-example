@@ -3,9 +3,10 @@ package config_test
 import (
 	"testing"
 
+	"os"
+
 	"github.com/Khigashiguchi/go-config-example/src/config"
 	"github.com/stretchr/testify/assert"
-	"os"
 )
 
 func TestNewConfig(t *testing.T) {
