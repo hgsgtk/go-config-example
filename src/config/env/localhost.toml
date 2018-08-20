@@ -1,0 +1,6 @@
+[database]
+user = "sample_user"
+password = "sample_password"
+host = "master_mysql"
+port = 3306
+name = "sample"

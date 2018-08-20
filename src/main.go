@@ -7,9 +7,10 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"os"
+
 	"github.com/Khigashiguchi/go-config-example/src/config"
 	_ "github.com/go-sql-driver/mysql" // mysql driverを使うため
-	"os"
 )
 
 // NewDB return database global connection handle.
@@ -41,11 +42,18 @@ func (h *Handler) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	// use database here.
 }
 
+const confDir = "./config/env/"
+
 func main() {
 	var err error
 
+	appMode := os.Getenv("APP_MODE")
+	if appMode == "" {
+		panic("failed to get application mode, check whether APP_MODE is set.")
+	}
+
 	// Get configuration
-	conf, err := config.NewConfig()
+	conf, err := config.NewConfig(confDir, appMode)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -60,7 +68,7 @@ func main() {
 	r := mux.NewRouter()
 	h := Handler{DB: db}
 	r.Methods("GET").Path("/posts").HandlerFunc(h.GetPostsHandler)
-	r.Methods("GET").Path("/.healthcheck").HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+	r.Methods("GET").Path("/.healthcheck").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
 
