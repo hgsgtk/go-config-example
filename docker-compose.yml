@@ -9,6 +9,9 @@ services:
     depends_on:
       - master_mysql
     restart: on-failure
+    environment:
+      APP_MODE: localhost
+      DB_PASSWORD: sample_password
   master_mysql:
     container_name: master_mysql
     image: mysql:5.6

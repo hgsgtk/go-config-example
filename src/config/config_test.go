@@ -3,6 +3,8 @@ package config_test
 import (
 	"testing"
 
+	"os"
+
 	"github.com/Khigashiguchi/go-config-example/src/config"
 	"github.com/stretchr/testify/assert"
 )
@@ -31,6 +33,8 @@ func TestNewConfig(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			confDir := "./env/"
+			os.Setenv("DB_PASSWORD", c.expected.DB.Password)
+
 			res, err := config.NewConfig(confDir, c.appMode)
 
 			assert.Equal(t, nil, err)
